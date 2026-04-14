@@ -33,10 +33,9 @@ const currencyFormatter = new Intl.NumberFormat('en-PH', {
   maximumFractionDigits: 0,
 })
 
-const ratioFormatter = new Intl.NumberFormat('en-US', {
-  style: 'percent',
-  minimumFractionDigits: 1,
-  maximumFractionDigits: 1,
+const rateFormatter = new Intl.NumberFormat('en-US', {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
 })
 
 const shortDateFormatter = new Intl.DateTimeFormat('en-US', {
@@ -68,8 +67,8 @@ function formatCurrency(value: number) {
   return currencyFormatter.format(value)
 }
 
-function formatPercent(value: number) {
-  return ratioFormatter.format(value)
+function formatRate(value: number) {
+  return `${rateFormatter.format(value)}x`
 }
 
 function formatChartDate(value: string) {
@@ -89,7 +88,7 @@ function formatTooltipCurrency(value: unknown) {
 }
 
 function formatTooltipPercent(value: unknown) {
-  return typeof value === 'number' ? formatPercent(value) : formatPercent(0)
+  return typeof value === 'number' ? formatRate(value) : formatRate(0)
 }
 
 function formatPaymentMethodLabel(value: unknown) {
@@ -177,9 +176,9 @@ export function AnalyticsPage() {
       note: 'Total requested value across all refund requests.',
     },
     {
-      label: 'Refund ratio',
-      value: formatPercent(overview.refundToTransactionRatio),
-      note: 'Share of seeded transactions that resulted in a refund request.',
+      label: 'Requests per transaction',
+      value: formatRate(overview.refundToTransactionRatio),
+      note: 'Average refund requests generated per related transaction in the selected window.',
     },
     {
       label: 'Average delay',
@@ -563,10 +562,12 @@ export function AnalyticsPage() {
         <Card className="analytics-card analytics-card--chart">
           <div className="analytics-card__header">
             <div>
-              <h3 id="refund-ratio-heading">Refund ratio by payment method</h3>
+              <h3 id="refund-ratio-heading">
+                Refund requests per transaction by payment method
+              </h3>
               <p>
-                Use this comparison to spot methods that over-index on refunds
-                relative to transaction volume.
+                Use this comparison to spot methods that generate the most
+                refund requests relative to their transaction volume.
               </p>
             </div>
           </div>
@@ -591,12 +592,12 @@ export function AnalyticsPage() {
                 />
                 <YAxis
                   stroke="#5f7890"
-                  tickFormatter={(value) => `${Math.round(value * 100)}%`}
+                  tickFormatter={(value) => `${value.toFixed(1)}x`}
                 />
                 <Tooltip
                   formatter={(value) => [
                     formatTooltipPercent(value),
-                    'Refund ratio',
+                    'Requests per transaction',
                   ]}
                   labelFormatter={(label) => formatPaymentMethodLabel(label)}
                 />
@@ -614,15 +615,17 @@ export function AnalyticsPage() {
           <div id="refund-ratio-summary">
             <p className="analytics-card__support">
               {highestRatioMethod
-                ? `Highest refund ratio: ${paymentMethodLabels[highestRatioMethod.paymentMethod]} at ${formatPercent(highestRatioMethod.refundToTransactionRatio)}.`
+                ? `Highest request rate: ${paymentMethodLabels[highestRatioMethod.paymentMethod]} at ${formatRate(highestRatioMethod.refundToTransactionRatio)}.`
                 : 'No refund ratio comparison is available in the selected window.'}
             </p>
             <table className="sr-only">
-              <caption>Refund ratio by payment method</caption>
+              <caption>
+                Refund requests per transaction by payment method
+              </caption>
               <thead>
                 <tr>
                   <th scope="col">Payment method</th>
-                  <th scope="col">Refund ratio</th>
+                  <th scope="col">Requests per transaction</th>
                   <th scope="col">Refund requests</th>
                   <th scope="col">Related transactions</th>
                 </tr>
@@ -631,7 +634,7 @@ export function AnalyticsPage() {
                 {paymentMethodAnalytics.map((entry) => (
                   <tr key={entry.paymentMethod}>
                     <td>{paymentMethodLabels[entry.paymentMethod]}</td>
-                    <td>{formatPercent(entry.refundToTransactionRatio)}</td>
+                    <td>{formatRate(entry.refundToTransactionRatio)}</td>
                     <td>{entry.refundRequestCount}</td>
                     <td>{entry.transactionCount}</td>
                   </tr>
