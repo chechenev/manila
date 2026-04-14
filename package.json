@@ -10,6 +10,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "preview": "vite preview --host 127.0.0.1",
+    "generate:seed": "node ./scripts/generate-seed-data.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",

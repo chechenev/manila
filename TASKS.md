@@ -156,49 +156,49 @@ Create realistic, deterministic mock data and the domain logic layer that powers
 
 ### Tasks
 
-- [ ] Define TypeScript domain models for:
+- [x] Define TypeScript domain models for:
   - transaction
   - refund request
   - customer
   - risk flag
   - refund decision/action state
-- [ ] Add runtime validation schemas for seeded data
-- [ ] Design the deterministic data generation strategy
-- [ ] Implement a seed-based data generator script
-- [ ] Generate 300+ transactions across 2-3 months
-- [ ] Generate 100+ refund requests linked to transactions
-- [ ] Ensure payment method distribution includes:
+- [x] Add runtime validation schemas for seeded data
+- [x] Design the deterministic data generation strategy
+- [x] Implement a seed-based data generator script
+- [x] Generate 300+ transactions across 2-3 months
+- [x] Generate 100+ refund requests linked to transactions
+- [x] Ensure payment method distribution includes:
   - GCash
   - Maya
   - Credit Card
   - Cash on Delivery
-- [ ] Ensure status coverage includes:
+- [x] Ensure status coverage includes:
   - authorized
   - captured
   - settled
   - refunded
   - failed
   - chargeback_filed
-- [ ] Seed scenario: duplicate refund requests
-- [ ] Seed scenario: refunds against authorized-only transactions
-- [ ] Seed scenario: refunds against chargeback transactions
-- [ ] Seed scenario: refund amount greater than original amount
-- [ ] Seed scenario: customers with concentrated refund bursts
-- [ ] Seed scenario: varied refund sizes from small to large
-- [ ] Commit generated data output for stable demos
-- [ ] Implement selectors/helpers for:
+- [x] Seed scenario: duplicate refund requests
+- [x] Seed scenario: refunds against authorized-only transactions
+- [x] Seed scenario: refunds against chargeback transactions
+- [x] Seed scenario: refund amount greater than original amount
+- [x] Seed scenario: customers with concentrated refund bursts
+- [x] Seed scenario: varied refund sizes from small to large
+- [x] Commit generated data output for stable demos
+- [x] Implement selectors/helpers for:
   - find transaction by refund request
   - calculate refund age
   - calculate purchase-to-request delay
   - customer refund counts in rolling windows
   - pending exposure totals
   - payment method summaries
-- [ ] Implement duplicate detection logic
-- [ ] Implement rule-based risk flagging logic
-- [ ] Implement overall risk level derivation
-- [ ] Add unit tests for all rules
-- [ ] Add unit tests for mixed-scenario cases
-- [ ] Add unit tests for key selectors
+- [x] Implement duplicate detection logic
+- [x] Implement rule-based risk flagging logic
+- [x] Implement overall risk level derivation
+- [x] Add unit tests for all rules
+- [x] Add unit tests for mixed-scenario cases
+- [x] Add unit tests for key selectors
 
 ### Deliverables
 
@@ -209,12 +209,12 @@ Create realistic, deterministic mock data and the domain logic layer that powers
 
 ### Verification Checklist
 
-- [ ] Data validates successfully
-- [ ] Seed output is deterministic across runs
-- [ ] Every required challenge scenario is present
-- [ ] Risk rules produce expected flags
-- [ ] Duplicate detection is explainable and test-covered
-- [ ] Analytics selectors can consume the seeded data cleanly
+- [x] Data validates successfully
+- [x] Seed output is deterministic across runs
+- [x] Every required challenge scenario is present
+- [x] Risk rules produce expected flags
+- [x] Duplicate detection is explainable and test-covered
+- [x] Analytics selectors can consume the seeded data cleanly
 
 ### Exit Criteria
 
@@ -513,8 +513,13 @@ Use this section later to note milestone outcomes, blockers, and scope adjustmen
 
 ### Milestone 2
 
-- Status: `[ ]`
+- Status: `[x]`
 - Notes:
+  - Deterministic seed generator added with committed JSON output
+  - Domain models and Zod schemas added
+  - Selectors for exposure, delay, customer velocity, and payment method summaries added
+  - Duplicate detection and rule-based risk engine added
+  - Seed coverage, selector, and risk tests all pass
 
 ### Milestone 3
 

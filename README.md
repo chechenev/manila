@@ -4,15 +4,17 @@ Production-oriented React + TypeScript + Vite prototype for the LuzonMart refund
 
 ## Status
 
-Milestone 1 is complete.
+Milestone 2 is complete.
 
 Current foundation includes:
 
 - Vite + React + TypeScript scaffold
 - route shell for Explorer and Analytics
 - reusable UI primitives and design tokens
+- deterministic seed-data generator and committed JSON dataset
+- domain models, schemas, selectors, and risk engine
 - strict TypeScript configuration
-- ESLint and Prettier setup
+- ESLint setup
 - Vitest baseline
 - Playwright baseline
 - accessibility-aware and mobile-aware layout foundation
@@ -29,13 +31,12 @@ npm run dev
 
 ```bash
 npm run build
+npm run generate:seed
 npm run lint
-npm run format:check
 npm run test
 npm run test:e2e
 ```
 
 ## Notes
 
-- Feature implementation has not started yet beyond Milestone 1 foundation work.
-- Mock data, risk logic, and production explorer workflows will land in later milestones.
+- Explorer implementation with real seeded data is the next milestone.
