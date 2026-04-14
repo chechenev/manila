@@ -136,6 +136,14 @@ Recommended demo path:
 3. Select several refunds, open `Bulk Review`, exclude flagged items, and show the preflight batch summary changing live.
 4. Move to `Analytics` and use the request-date filter to explain refund spikes, method pressure, and concentrated customer risk.
 
+## Judge-Facing Summary
+
+- Primary workflow is explorer-first: the queue is optimized for triage, decisions, and explanation rather than passive reporting.
+- Risk logic is intentionally transparent: duplicate detection, blocking rules, and warnings are surfaced with readable explanations instead of opaque scoring.
+- Analytics is grounded in the same selector layer as the explorer, so dashboard and operational views stay consistent.
+- Stretch work focuses on workflow safety rather than novelty: batch preflight, exclusions, and what-if simulation all reduce unsafe approvals.
+- The implementation is static and deterministic by design, so the demo remains stable, reproducible, and easy to review.
+
 ## Seeded Scenarios To Demo
 
 - duplicate refund requests
