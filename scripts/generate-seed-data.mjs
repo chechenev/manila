@@ -57,7 +57,9 @@ function addDays(date, days) {
 }
 
 function randomDateBetween(start, end) {
-  return new Date(start.getTime() + random() * (end.getTime() - start.getTime()))
+  return new Date(
+    start.getTime() + random() * (end.getTime() - start.getTime()),
+  )
 }
 
 function formatId(prefix, index, pad = 4) {
@@ -151,7 +153,10 @@ const endDate = new Date('2026-04-14T10:00:00.000Z')
 const customers = Array.from({ length: 190 }, (_, index) => {
   const firstName = pick(firstNames)
   const lastName = pick(lastNames)
-  const createdAt = randomDateBetween(addDays(startDate, -380), addDays(startDate, -20))
+  const createdAt = randomDateBetween(
+    addDays(startDate, -380),
+    addDays(startDate, -20),
+  )
   const id = formatId('CUS', index + 1, 5)
 
   return {
@@ -171,14 +176,15 @@ const transactions = Array.from({ length: 360 }, (_, index) => {
   const transactionDate = randomDateBetween(startDate, addDays(endDate, -2))
   const status = weightedPick(transactionStatuses)
   const paymentMethod = weightedPick(paymentMethods)
-  const amountValue =
-    random() < 0.72 ? amount(280, 2400) : amount(11000, 29500)
+  const amountValue = random() < 0.72 ? amount(280, 2400) : amount(11000, 29500)
   const capturedAt =
     status === 'authorized' || status === 'failed'
       ? null
       : iso(addHours(transactionDate, int(1, 20)))
   const settledAt =
-    status === 'settled' || status === 'refunded' || status === 'chargeback_filed'
+    status === 'settled' ||
+    status === 'refunded' ||
+    status === 'chargeback_filed'
       ? iso(addDays(new Date(capturedAt ?? transactionDate), int(1, 3)))
       : null
   const chargebackFiledAt =
@@ -199,7 +205,8 @@ const transactions = Array.from({ length: 360 }, (_, index) => {
     capturedAt,
     settledAt,
     chargebackFiledAt,
-    refundedAmountTotal: status === 'refunded' ? amount(amountValue * 0.4, amountValue) : 0,
+    refundedAmountTotal:
+      status === 'refunded' ? amount(amountValue * 0.4, amountValue) : 0,
     authorizationExpiresAt:
       status === 'authorized' ? iso(addDays(transactionDate, 7)) : null,
     hasGatewayTimeoutHistory: false,
@@ -218,14 +225,26 @@ const ensureStatus = (status, count) => {
         transaction.capturedAt = null
         transaction.settledAt = null
         transaction.chargebackFiledAt = null
-        transaction.authorizationExpiresAt = iso(addDays(new Date(transaction.transactionDate), 7))
+        transaction.authorizationExpiresAt = iso(
+          addDays(new Date(transaction.transactionDate), 7),
+        )
       } else if (status === 'chargeback_filed') {
-        transaction.capturedAt ||= iso(addHours(new Date(transaction.transactionDate), 8))
-        transaction.settledAt ||= iso(addDays(new Date(transaction.capturedAt), 2))
-        transaction.chargebackFiledAt = iso(addDays(new Date(transaction.settledAt), 10))
+        transaction.capturedAt ||= iso(
+          addHours(new Date(transaction.transactionDate), 8),
+        )
+        transaction.settledAt ||= iso(
+          addDays(new Date(transaction.capturedAt), 2),
+        )
+        transaction.chargebackFiledAt = iso(
+          addDays(new Date(transaction.settledAt), 10),
+        )
       } else if (status === 'settled') {
-        transaction.capturedAt ||= iso(addHours(new Date(transaction.transactionDate), 6))
-        transaction.settledAt ||= iso(addDays(new Date(transaction.capturedAt), 2))
+        transaction.capturedAt ||= iso(
+          addHours(new Date(transaction.transactionDate), 6),
+        )
+        transaction.settledAt ||= iso(
+          addDays(new Date(transaction.capturedAt), 2),
+        )
       }
       assigned += 1
     }
@@ -249,7 +268,9 @@ function nextRefundId() {
 
 function createRefundRequest(transaction, overrides = {}) {
   const baseDate = addDays(new Date(transaction.transactionDate), int(1, 32))
-  const requestDate = overrides.requestDate ? new Date(overrides.requestDate) : baseDate
+  const requestDate = overrides.requestDate
+    ? new Date(overrides.requestDate)
+    : baseDate
   const status = overrides.status ?? weightedPick(refundStatuses)
   const refundDestinationType =
     overrides.refundDestinationType ??
@@ -260,8 +281,9 @@ function createRefundRequest(transaction, overrides = {}) {
         : 'original_method')
   const requestedAmount =
     overrides.requestedAmount ??
-    Math.round((transaction.amount * (random() < 0.65 ? random() * 0.65 + 0.2 : 1)) * 100) /
-      100
+    Math.round(
+      transaction.amount * (random() < 0.65 ? random() * 0.65 + 0.2 : 1) * 100,
+    ) / 100
 
   const request = {
     id: nextRefundId(),
@@ -276,7 +298,8 @@ function createRefundRequest(transaction, overrides = {}) {
     priorAttemptOutcome: overrides.priorAttemptOutcome ?? 'none',
     duplicateGroupId: overrides.duplicateGroupId ?? null,
     operatorNote: overrides.operatorNote ?? null,
-    lineItemsReturned: overrides.lineItemsReturned ?? int(1, transaction.itemCount),
+    lineItemsReturned:
+      overrides.lineItemsReturned ?? int(1, transaction.itemCount),
   }
 
   refundRequests.push(request)
@@ -286,7 +309,9 @@ function createRefundRequest(transaction, overrides = {}) {
 const settledPool = transactions.filter((transaction) =>
   ['settled', 'captured', 'refunded'].includes(transaction.status),
 )
-const authorizedPool = transactions.filter((transaction) => transaction.status === 'authorized')
+const authorizedPool = transactions.filter(
+  (transaction) => transaction.status === 'authorized',
+)
 const chargebackPool = transactions.filter(
   (transaction) => transaction.status === 'chargeback_filed',
 )
@@ -316,7 +341,10 @@ for (let index = 0; index < 4; index += 1) {
   const transaction = settledPool[index]
   const duplicateGroupId = `DUP-${index + 1}`
   const baseDate = addDays(new Date(transaction.transactionDate), int(5, 16))
-  const requestedAmount = Math.min(transaction.amount, amount(500, transaction.amount))
+  const requestedAmount = Math.min(
+    transaction.amount,
+    amount(500, transaction.amount),
+  )
 
   createRefundRequest(transaction, {
     status: 'pending',
@@ -339,7 +367,10 @@ for (let index = 0; index < 3; index += 1) {
   createRefundRequest(transaction, {
     status: 'pending',
     requestDate: iso(addDays(new Date(transaction.transactionDate), int(1, 3))),
-    requestedAmount: Math.min(transaction.amount, amount(250, transaction.amount)),
+    requestedAmount: Math.min(
+      transaction.amount,
+      amount(250, transaction.amount),
+    ),
     reason: 'billing_issue',
   })
 }
@@ -348,8 +379,13 @@ for (let index = 0; index < 3; index += 1) {
   const transaction = chargebackPool[index]
   createRefundRequest(transaction, {
     status: 'pending',
-    requestDate: iso(addDays(new Date(transaction.chargebackFiledAt), int(1, 4))),
-    requestedAmount: Math.min(transaction.amount, amount(300, transaction.amount)),
+    requestDate: iso(
+      addDays(new Date(transaction.chargebackFiledAt), int(1, 4)),
+    ),
+    requestedAmount: Math.min(
+      transaction.amount,
+      amount(300, transaction.amount),
+    ),
     reason: 'item_not_received',
   })
 }
@@ -358,8 +394,11 @@ for (let index = 0; index < 2; index += 1) {
   const transaction = settledPool[20 + index]
   createRefundRequest(transaction, {
     status: 'pending',
-    requestDate: iso(addDays(new Date(transaction.transactionDate), int(7, 18))),
-    requestedAmount: Math.round((transaction.amount + amount(120, 380)) * 100) / 100,
+    requestDate: iso(
+      addDays(new Date(transaction.transactionDate), int(7, 18)),
+    ),
+    requestedAmount:
+      Math.round((transaction.amount + amount(120, 380)) * 100) / 100,
     reason: 'billing_issue',
   })
 }
@@ -370,8 +409,13 @@ for (let index = 0; index < 3; index += 1) {
   createRefundRequest(transaction, {
     status: 'pending',
     priorAttemptOutcome: 'timeout',
-    requestDate: iso(addDays(new Date(transaction.transactionDate), int(3, 10))),
-    requestedAmount: Math.min(transaction.amount, amount(600, transaction.amount)),
+    requestDate: iso(
+      addDays(new Date(transaction.transactionDate), int(3, 10)),
+    ),
+    requestedAmount: Math.min(
+      transaction.amount,
+      amount(600, transaction.amount),
+    ),
     reason: 'damaged_item',
     operatorNote: 'Previous attempt timed out in gateway response log.',
   })
@@ -381,7 +425,9 @@ while (refundRequests.length < 140) {
   const transaction = pick(settledPool)
   createRefundRequest(transaction, {
     status: weightedPick(refundStatuses),
-    requestDate: iso(addDays(new Date(transaction.transactionDate), int(2, 38))),
+    requestDate: iso(
+      addDays(new Date(transaction.transactionDate), int(2, 38)),
+    ),
     requestedAmount:
       random() < 0.14
         ? amount(280, 1100)
@@ -405,9 +451,10 @@ for (const refundRequest of refundRequests) {
 
 for (const transaction of transactions) {
   const approvedAmount = approvedAmountsByTransaction.get(transaction.id) ?? 0
-  transaction.refundedAmountTotal = Math.round(
-    Math.max(transaction.refundedAmountTotal, approvedAmount) * 100,
-  ) / 100
+  transaction.refundedAmountTotal =
+    Math.round(
+      Math.max(transaction.refundedAmountTotal, approvedAmount) * 100,
+    ) / 100
 }
 
 const output = {

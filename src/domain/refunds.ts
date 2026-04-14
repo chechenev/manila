@@ -158,7 +158,10 @@ export type DatasetIndexes = {
 export type DuplicateCandidate = {
   requestId: string
   matchedRequestId: string
-  reason: 'duplicate_group' | 'same_transaction_same_amount' | 'same_customer_close_window'
+  reason:
+    | 'duplicate_group'
+    | 'same_transaction_same_amount'
+    | 'same_customer_close_window'
 }
 
 export type PaymentMethodSummary = {

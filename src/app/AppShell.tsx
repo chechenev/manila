@@ -52,10 +52,10 @@ export function AppShell() {
             aria-labelledby="milestone-heading"
           >
             <p className="app-sidebar__label">Current Milestone</p>
-            <h2 id="milestone-heading">Project Foundation</h2>
+            <h2 id="milestone-heading">Explorer Workflow</h2>
             <p>
-              Shared layout, routing, design tokens, and testing scaffolding are
-              now wired so feature work can land on a stable base.
+              The seeded queue, detail workflow, and local decision actions are
+              now ready for end-to-end refund investigation demos.
             </p>
           </section>
         </aside>

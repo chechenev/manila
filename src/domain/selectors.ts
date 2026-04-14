@@ -11,11 +11,15 @@ import type {
 const dayMs = 24 * 60 * 60 * 1000
 
 export function buildDatasetIndexes(data: RefundWorkbenchData): DatasetIndexes {
-  const customersById = new Map(data.customers.map((customer) => [customer.id, customer]))
+  const customersById = new Map(
+    data.customers.map((customer) => [customer.id, customer]),
+  )
   const transactionsById = new Map(
     data.transactions.map((transaction) => [transaction.id, transaction]),
   )
-  const refundsById = new Map(data.refundRequests.map((refund) => [refund.id, refund]))
+  const refundsById = new Map(
+    data.refundRequests.map((refund) => [refund.id, refund]),
+  )
 
   const refundsByCustomerId = new Map<string, RefundRequest[]>()
   const refundsByTransactionId = new Map<string, RefundRequest[]>()
@@ -32,11 +36,15 @@ export function buildDatasetIndexes(data: RefundWorkbenchData): DatasetIndexes {
   }
 
   for (const refunds of refundsByCustomerId.values()) {
-    refunds.sort((left, right) => left.requestDate.localeCompare(right.requestDate))
+    refunds.sort((left, right) =>
+      left.requestDate.localeCompare(right.requestDate),
+    )
   }
 
   for (const refunds of refundsByTransactionId.values()) {
-    refunds.sort((left, right) => left.requestDate.localeCompare(right.requestDate))
+    refunds.sort((left, right) =>
+      left.requestDate.localeCompare(right.requestDate),
+    )
   }
 
   return {
@@ -68,7 +76,9 @@ export function getTransactionById(
   const transaction = indexes.transactionsById.get(transactionId)
 
   if (!transaction) {
-    throw new Error(`Transaction ${transactionId} was not found in dataset indexes.`)
+    throw new Error(
+      `Transaction ${transactionId} was not found in dataset indexes.`,
+    )
   }
 
   return transaction
@@ -81,7 +91,10 @@ export function findTransactionByRefundRequest(
   return getTransactionById(indexes, refundRequest.transactionId)
 }
 
-export function differenceInCalendarDays(startIso: string, endIso: string): number {
+export function differenceInCalendarDays(
+  startIso: string,
+  endIso: string,
+): number {
   const start = new Date(startIso)
   const end = new Date(endIso)
 
@@ -92,7 +105,10 @@ export function calculatePurchaseToRequestDelayDays(
   transaction: Transaction,
   refundRequest: RefundRequest,
 ): number {
-  return differenceInCalendarDays(transaction.transactionDate, refundRequest.requestDate)
+  return differenceInCalendarDays(
+    transaction.transactionDate,
+    refundRequest.requestDate,
+  )
 }
 
 export function countCustomerRefundRequestsInWindow(
@@ -105,14 +121,16 @@ export function countCustomerRefundRequestsInWindow(
   const anchorTime = new Date(anchorIso).getTime()
   const windowStart = anchorTime - windowDays * dayMs
 
-  return (indexes.refundsByCustomerId.get(customerId) ?? []).filter((refund) => {
-    if (excludeRequestId && refund.id === excludeRequestId) {
-      return false
-    }
+  return (indexes.refundsByCustomerId.get(customerId) ?? []).filter(
+    (refund) => {
+      if (excludeRequestId && refund.id === excludeRequestId) {
+        return false
+      }
 
-    const requestTime = new Date(refund.requestDate).getTime()
-    return requestTime >= windowStart && requestTime <= anchorTime
-  }).length
+      const requestTime = new Date(refund.requestDate).getTime()
+      return requestTime >= windowStart && requestTime <= anchorTime
+    },
+  ).length
 }
 
 export function countPendingCustomerRefundsInWindow(
@@ -125,21 +143,25 @@ export function countPendingCustomerRefundsInWindow(
   const anchorTime = new Date(anchorIso).getTime()
   const windowStart = anchorTime - windowDays * dayMs
 
-  return (indexes.refundsByCustomerId.get(customerId) ?? []).filter((refund) => {
-    if (excludeRequestId && refund.id === excludeRequestId) {
-      return false
-    }
+  return (indexes.refundsByCustomerId.get(customerId) ?? []).filter(
+    (refund) => {
+      if (excludeRequestId && refund.id === excludeRequestId) {
+        return false
+      }
 
-    if (refund.status !== 'pending') {
-      return false
-    }
+      if (refund.status !== 'pending') {
+        return false
+      }
 
-    const requestTime = new Date(refund.requestDate).getTime()
-    return requestTime >= windowStart && requestTime <= anchorTime
-  }).length
+      const requestTime = new Date(refund.requestDate).getTime()
+      return requestTime >= windowStart && requestTime <= anchorTime
+    },
+  ).length
 }
 
-export function calculatePendingExposureTotal(data: RefundWorkbenchData): number {
+export function calculatePendingExposureTotal(
+  data: RefundWorkbenchData,
+): number {
   return data.refundRequests
     .filter((refund) => refund.status === 'pending')
     .reduce((total, refund) => total + refund.requestedAmount, 0)
@@ -170,24 +192,27 @@ export function buildPaymentMethodSummaries(
     if (refund.status === 'pending') {
       pendingAmounts.set(
         transaction.paymentMethod,
-        (pendingAmounts.get(transaction.paymentMethod) ?? 0) + refund.requestedAmount,
+        (pendingAmounts.get(transaction.paymentMethod) ?? 0) +
+          refund.requestedAmount,
       )
     }
   }
 
-  return [...transactionCounts.entries()].map(([paymentMethod, transactionCount]) => {
-    const refundRequestCount = refundCounts.get(paymentMethod) ?? 0
-    const pendingRefundAmount = pendingAmounts.get(paymentMethod) ?? 0
+  return [...transactionCounts.entries()].map(
+    ([paymentMethod, transactionCount]) => {
+      const refundRequestCount = refundCounts.get(paymentMethod) ?? 0
+      const pendingRefundAmount = pendingAmounts.get(paymentMethod) ?? 0
 
-    return {
-      paymentMethod,
-      transactionCount,
-      refundRequestCount,
-      pendingRefundAmount,
-      refundToTransactionRatio:
-        transactionCount === 0 ? 0 : refundRequestCount / transactionCount,
-    }
-  })
+      return {
+        paymentMethod,
+        transactionCount,
+        refundRequestCount,
+        pendingRefundAmount,
+        refundToTransactionRatio:
+          transactionCount === 0 ? 0 : refundRequestCount / transactionCount,
+      }
+    },
+  )
 }
 
 export function calculateAveragePurchaseToRefundDelayDays(

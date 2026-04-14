@@ -20,14 +20,18 @@ describe('seed data selectors', () => {
   })
 
   it('calculates pending exposure and payment summaries', () => {
-    const pendingExposure = calculatePendingExposureTotal(refundWorkbenchSeedData)
-    const paymentMethodSummaries = buildPaymentMethodSummaries(refundWorkbenchSeedData)
+    const pendingExposure = calculatePendingExposureTotal(
+      refundWorkbenchSeedData,
+    )
+    const paymentMethodSummaries = buildPaymentMethodSummaries(
+      refundWorkbenchSeedData,
+    )
 
     expect(pendingExposure).toBeGreaterThan(0)
     expect(paymentMethodSummaries).toHaveLength(4)
-    expect(paymentMethodSummaries.every((summary) => summary.transactionCount > 0)).toBe(
-      true,
-    )
+    expect(
+      paymentMethodSummaries.every((summary) => summary.transactionCount > 0),
+    ).toBe(true)
   })
 
   it('counts customer refund velocity in a rolling window', () => {
@@ -49,11 +53,11 @@ describe('seed data selectors', () => {
     expect(maxWindowCount).toBeGreaterThanOrEqual(4)
   })
 })
- 
+
 describe('delay metrics', () => {
   it('produces a reasonable average delay metric', () => {
-    expect(calculateAveragePurchaseToRefundDelayDays(refundWorkbenchSeedData)).toBeGreaterThan(
-      0,
-    )
+    expect(
+      calculateAveragePurchaseToRefundDelayDays(refundWorkbenchSeedData),
+    ).toBeGreaterThan(0)
   })
 })

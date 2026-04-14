@@ -230,18 +230,18 @@ Build the main operational workspace for reviewing and actioning refund requests
 
 ### Tasks
 
-- [ ] Design the explorer information hierarchy
-- [ ] Implement a queue header summary with key counts:
+- [x] Design the explorer information hierarchy
+- [x] Implement a queue header summary with key counts:
   - total pending
   - critical risk count
   - warning count
   - pending refund amount exposure
-- [ ] Implement the refund request listing component
-- [ ] Decide and implement the primary list format:
+- [x] Implement the refund request listing component
+- [x] Decide and implement the primary list format:
   - table
   - card list
   - hybrid responsive behavior
-- [ ] Display for each refund request:
+- [x] Display for each refund request:
   - original transaction amount
   - requested refund amount
   - customer identifier
@@ -250,35 +250,35 @@ Build the main operational workspace for reviewing and actioning refund requests
   - refund request date
   - transaction status
   - risk level
-- [ ] Implement sorting behavior for operational usefulness
-- [ ] Implement text search
-- [ ] Implement filters for:
+- [x] Implement sorting behavior for operational usefulness
+- [x] Implement text search
+- [x] Implement filters for:
   - date range
   - payment method
   - refund amount range
   - customer
   - transaction status
-- [ ] Implement filter summary / active chips
-- [ ] Implement zero-results state
-- [ ] Implement refund selection behavior
-- [ ] Implement a details panel or drawer
-- [ ] Show full context in the details panel:
+- [x] Implement filter summary / active chips
+- [x] Implement zero-results state
+- [x] Implement refund selection behavior
+- [x] Implement a details panel or drawer
+- [x] Show full context in the details panel:
   - transaction metadata
   - request metadata
   - historical refund context
   - existing/reflected risk flags
   - rule explanations
-- [ ] Add a visual timeline or lifecycle summary if useful
-- [ ] Implement action controls:
+- [x] Add a visual timeline or lifecycle summary if useful
+- [x] Implement action controls:
   - approve
   - reject
   - flag for review
-- [ ] Reflect action state in UI
-- [ ] Add confirmation or safety messaging for risky items
-- [ ] Ensure keyboard and focus behavior are reasonable
-- [ ] Ensure the explorer remains usable on mobile-sized screens
-- [ ] Add tests for core explorer interactions
-- [ ] Add at least one Playwright explorer flow
+- [x] Reflect action state in UI
+- [x] Add confirmation or safety messaging for risky items
+- [x] Ensure keyboard and focus behavior are reasonable
+- [x] Ensure the explorer remains usable on mobile-sized screens
+- [x] Add tests for core explorer interactions
+- [x] Add at least one Playwright explorer flow
 
 ### Deliverables
 
@@ -289,12 +289,12 @@ Build the main operational workspace for reviewing and actioning refund requests
 
 ### Verification Checklist
 
-- [ ] User can scan the queue quickly
-- [ ] Risky items stand out clearly
-- [ ] Search and filters narrow results correctly
-- [ ] Selecting an item shows full context
-- [ ] Actions update local state predictably
-- [ ] The explorer works on realistic seeded data
+- [x] User can scan the queue quickly
+- [x] Risky items stand out clearly
+- [x] Search and filters narrow results correctly
+- [x] Selecting an item shows full context
+- [x] Actions update local state predictably
+- [x] The explorer works on realistic seeded data
 
 ### Exit Criteria
 
@@ -523,8 +523,12 @@ Use this section later to note milestone outcomes, blockers, and scope adjustmen
 
 ### Milestone 3
 
-- Status: `[ ]`
+- Status: `[x]`
 - Notes:
+  - Refund Explorer now uses real seeded data and risk enrichment
+  - Search, filtering, sorting, pagination, and URL state are wired
+  - Queue cards, detail panel, lifecycle timeline, and action controls are implemented
+  - Core explorer interaction tests and Playwright explorer flow pass
 
 ### Milestone 4
 

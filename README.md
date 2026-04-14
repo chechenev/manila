@@ -4,7 +4,7 @@ Production-oriented React + TypeScript + Vite prototype for the LuzonMart refund
 
 ## Status
 
-Milestone 2 is complete.
+Milestone 3 is complete.
 
 Current foundation includes:
 
@@ -13,6 +13,7 @@ Current foundation includes:
 - reusable UI primitives and design tokens
 - deterministic seed-data generator and committed JSON dataset
 - domain models, schemas, selectors, and risk engine
+- interactive Refund Explorer with filtering, URL state, pagination, detail drill-down, and local actions
 - strict TypeScript configuration
 - ESLint setup
 - Vitest baseline
@@ -39,4 +40,4 @@ npm run test:e2e
 
 ## Notes
 
-- Explorer implementation with real seeded data is the next milestone.
+- Milestone 4 will expand the analytics route with charts and shared selector-backed KPIs.

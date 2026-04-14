@@ -4,17 +4,25 @@ import { enrichAllRefundRequests } from '../domain/risk.ts'
 
 describe('refund seed data coverage', () => {
   it('contains the required baseline volume', () => {
-    expect(refundWorkbenchSeedData.transactions.length).toBeGreaterThanOrEqual(300)
-    expect(refundWorkbenchSeedData.refundRequests.length).toBeGreaterThanOrEqual(100)
+    expect(refundWorkbenchSeedData.transactions.length).toBeGreaterThanOrEqual(
+      300,
+    )
+    expect(
+      refundWorkbenchSeedData.refundRequests.length,
+    ).toBeGreaterThanOrEqual(100)
     expect(refundWorkbenchSeedData.customers.length).toBeGreaterThanOrEqual(100)
   })
 
   it('covers all required payment methods and transaction statuses', () => {
     const paymentMethods = new Set(
-      refundWorkbenchSeedData.transactions.map((transaction) => transaction.paymentMethod),
+      refundWorkbenchSeedData.transactions.map(
+        (transaction) => transaction.paymentMethod,
+      ),
     )
     const statuses = new Set(
-      refundWorkbenchSeedData.transactions.map((transaction) => transaction.status),
+      refundWorkbenchSeedData.transactions.map(
+        (transaction) => transaction.status,
+      ),
     )
 
     expect(paymentMethods).toEqual(
@@ -36,7 +44,9 @@ describe('refund seed data coverage', () => {
     const enriched = enrichAllRefundRequests(refundWorkbenchSeedData)
 
     expect(
-      refundWorkbenchSeedData.refundRequests.filter((refund) => refund.duplicateGroupId).length,
+      refundWorkbenchSeedData.refundRequests.filter(
+        (refund) => refund.duplicateGroupId,
+      ).length,
     ).toBeGreaterThanOrEqual(6)
     expect(
       enriched.filter((refund) =>
@@ -50,12 +60,16 @@ describe('refund seed data coverage', () => {
     ).toBeGreaterThanOrEqual(2)
     expect(
       enriched.filter((refund) =>
-        refund.riskFlags.some((flag) => flag.code === 'amount_exceeds_original'),
+        refund.riskFlags.some(
+          (flag) => flag.code === 'amount_exceeds_original',
+        ),
       ).length,
     ).toBeGreaterThanOrEqual(1)
     expect(
       enriched.filter((refund) =>
-        refund.riskFlags.some((flag) => flag.code === 'customer_refund_velocity'),
+        refund.riskFlags.some(
+          (flag) => flag.code === 'customer_refund_velocity',
+        ),
       ).length,
     ).toBeGreaterThanOrEqual(4)
   })

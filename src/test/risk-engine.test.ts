@@ -80,7 +80,10 @@ describe('risk engine', () => {
       ],
     })
 
-    const flags = evaluateRiskFlags(buildDatasetIndexes(scenario), scenario.refundRequests[0])
+    const flags = evaluateRiskFlags(
+      buildDatasetIndexes(scenario),
+      scenario.refundRequests[0],
+    )
     expect(flags.map((flag) => flag.code)).toContain('original_not_captured')
     expect(deriveRiskLevel(flags)).toBe('critical')
   })
@@ -121,7 +124,10 @@ describe('risk engine', () => {
       ],
     })
 
-    const flags = evaluateRiskFlags(buildDatasetIndexes(scenario), scenario.refundRequests[0])
+    const flags = evaluateRiskFlags(
+      buildDatasetIndexes(scenario),
+      scenario.refundRequests[0],
+    )
     expect(flags.map((flag) => flag.code)).toContain('probable_duplicate')
   })
 

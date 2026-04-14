@@ -16,7 +16,11 @@ import {
   getTransactionById,
 } from './selectors.ts'
 
-function isSameDayWindow(leftIso: string, rightIso: string, hours: number): boolean {
+function isSameDayWindow(
+  leftIso: string,
+  rightIso: string,
+  hours: number,
+): boolean {
   const difference =
     Math.abs(new Date(leftIso).getTime() - new Date(rightIso).getTime()) /
     (60 * 60 * 1000)
@@ -28,8 +32,10 @@ export function detectDuplicateCandidates(
   indexes: DatasetIndexes,
   refundRequest: RefundRequest,
 ): DuplicateCandidate[] {
-  const transactionMatches = indexes.refundsByTransactionId.get(refundRequest.transactionId) ?? []
-  const customerMatches = indexes.refundsByCustomerId.get(refundRequest.customerId) ?? []
+  const transactionMatches =
+    indexes.refundsByTransactionId.get(refundRequest.transactionId) ?? []
+  const customerMatches =
+    indexes.refundsByCustomerId.get(refundRequest.customerId) ?? []
   const candidates: DuplicateCandidate[] = []
 
   for (const related of transactionMatches) {
@@ -50,7 +56,8 @@ export function detectDuplicateCandidates(
     }
 
     if (
-      Math.abs(related.requestedAmount - refundRequest.requestedAmount) < 0.01 &&
+      Math.abs(related.requestedAmount - refundRequest.requestedAmount) <
+        0.01 &&
       isSameDayWindow(related.requestDate, refundRequest.requestDate, 72)
     ) {
       candidates.push({
@@ -125,7 +132,10 @@ export function evaluateRiskFlags(
     })
   }
 
-  if (transaction.status === 'chargeback_filed' || transaction.chargebackFiledAt) {
+  if (
+    transaction.status === 'chargeback_filed' ||
+    transaction.chargebackFiledAt
+  ) {
     flags.push({
       code: 'chargeback_exists',
       severity: 'critical',
@@ -158,7 +168,10 @@ export function evaluateRiskFlags(
     })
   }
 
-  if (refundRequest.priorAttemptOutcome === 'timeout' || transaction.hasGatewayTimeoutHistory) {
+  if (
+    refundRequest.priorAttemptOutcome === 'timeout' ||
+    transaction.hasGatewayTimeoutHistory
+  ) {
     flags.push({
       code: 'ambiguous_prior_refund',
       severity: 'critical',
@@ -237,9 +250,10 @@ export function enrichRefundRequest(
 ): EnrichedRefundRequest {
   const transaction = getTransactionById(indexes, refundRequest.transactionId)
   const customer = getCustomerById(indexes, refundRequest.customerId)
-  const duplicateCandidateIds = detectDuplicateCandidates(indexes, refundRequest).map(
-    (candidate) => candidate.matchedRequestId,
-  )
+  const duplicateCandidateIds = detectDuplicateCandidates(
+    indexes,
+    refundRequest,
+  ).map((candidate) => candidate.matchedRequestId)
   const riskFlags = evaluateRiskFlags(indexes, refundRequest)
 
   return {
