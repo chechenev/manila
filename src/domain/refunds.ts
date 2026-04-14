@@ -204,6 +204,43 @@ export type CustomerRefundInsight = {
   latestRequestDate: string
 }
 
+export type BatchProcessState = 'safe' | 'review' | 'blocked'
+
+export type BatchSafetySummary = {
+  selectedCount: number
+  includedCount: number
+  excludedCount: number
+  selectedAmount: number
+  includedAmount: number
+  excludedAmount: number
+  safeCount: number
+  reviewCount: number
+  criticalCount: number
+  blockingCount: number
+  state: BatchProcessState
+}
+
+export type FilteredViewImpact = {
+  requestCount: number
+  totalAmount: number
+  criticalCount: number
+  criticalAmount: number
+  reviewCount: number
+  reviewAmount: number
+  safeCount: number
+  safeAmount: number
+}
+
+export type SingleRefundSimulationResult = {
+  state: BatchProcessState
+  headline: string
+  summary: string
+  duplicateExposureCount: number
+  blockingReasons: string[]
+  reviewReasons: string[]
+  conflictingRequestIds: string[]
+}
+
 export type EnrichedRefundRequest = RefundRequest & {
   customer: Customer
   transaction: Transaction

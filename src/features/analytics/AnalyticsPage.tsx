@@ -98,6 +98,13 @@ function formatPaymentMethodLabel(value: unknown) {
     : 'Unknown'
 }
 
+function getTopEntry<T>(
+  entries: T[],
+  selector: (entry: T) => number,
+): T | undefined {
+  return [...entries].sort((left, right) => selector(right) - selector(left))[0]
+}
+
 export function AnalyticsPage() {
   const requestDateBounds = useMemo(
     () => getRefundRequestDateBounds(refundWorkbenchSeedData),
@@ -137,13 +144,26 @@ export function AnalyticsPage() {
     [filteredAnalyticsData],
   )
 
-  const highestRatioMethod = [...paymentMethodAnalytics].sort(
-    (left, right) =>
-      right.refundToTransactionRatio - left.refundToTransactionRatio,
-  )[0]
-  const highestRiskCustomer = [...customerInsights].sort(
-    (left, right) => right.criticalRiskCount - left.criticalRiskCount,
-  )[0]
+  const highestRatioMethod = getTopEntry(
+    paymentMethodAnalytics,
+    (entry) => entry.refundToTransactionRatio,
+  )
+  const highestRiskCustomer = getTopEntry(
+    customerInsights,
+    (entry) => entry.criticalRiskCount,
+  )
+  const busiestRefundDay = getTopEntry(
+    refundTrend,
+    (entry) => entry.refundCount,
+  )
+  const highestAmountDay = getTopEntry(
+    refundTrend,
+    (entry) => entry.refundAmount,
+  )
+  const highestAmountMethod = getTopEntry(
+    paymentMethodAnalytics,
+    (entry) => entry.refundAmountTotal,
+  )
 
   const kpis = [
     {
@@ -302,14 +322,19 @@ export function AnalyticsPage() {
         <Card className="analytics-card analytics-card--chart">
           <div className="analytics-card__header">
             <div>
-              <h3>Refund volume over time</h3>
+              <h3 id="refund-volume-heading">Refund volume over time</h3>
               <p>
                 Daily request count highlights operational spikes and
                 post-incident surges.
               </p>
             </div>
           </div>
-          <div className="chart-shell" aria-label="Refund volume chart">
+          <div
+            aria-describedby="refund-volume-summary"
+            aria-labelledby="refund-volume-heading"
+            className="chart-shell"
+            role="img"
+          >
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={refundTrend}>
                 <CartesianGrid
@@ -333,19 +358,50 @@ export function AnalyticsPage() {
               </BarChart>
             </ResponsiveContainer>
           </div>
+          <div id="refund-volume-summary">
+            <p className="analytics-card__support">
+              {busiestRefundDay
+                ? `Peak request day: ${busiestRefundDay.label} with ${busiestRefundDay.refundCount.toLocaleString()} refund requests totaling ${formatCurrency(busiestRefundDay.refundAmount)}.`
+                : 'No refund volume data is available in the selected window.'}
+            </p>
+            <table className="sr-only">
+              <caption>Refund volume by request date</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Request date</th>
+                  <th scope="col">Refund requests</th>
+                  <th scope="col">Refund amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                {refundTrend.map((point) => (
+                  <tr key={point.isoDate}>
+                    <td>{point.label}</td>
+                    <td>{point.refundCount}</td>
+                    <td>{formatCurrency(point.refundAmount)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </Card>
 
         <Card className="analytics-card analytics-card--chart">
           <div className="analytics-card__header">
             <div>
-              <h3>Refund amount over time</h3>
+              <h3 id="refund-amount-heading">Refund amount over time</h3>
               <p>
                 Requested amount shows whether recent spikes are operationally
                 small or financially dangerous.
               </p>
             </div>
           </div>
-          <div className="chart-shell" aria-label="Refund amount chart">
+          <div
+            aria-describedby="refund-amount-summary"
+            aria-labelledby="refund-amount-heading"
+            className="chart-shell"
+            role="img"
+          >
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={refundTrend}>
                 <defs>
@@ -390,12 +446,38 @@ export function AnalyticsPage() {
               </AreaChart>
             </ResponsiveContainer>
           </div>
+          <div id="refund-amount-summary">
+            <p className="analytics-card__support">
+              {highestAmountDay
+                ? `Highest requested amount day: ${highestAmountDay.label} at ${formatCurrency(highestAmountDay.refundAmount)} across ${highestAmountDay.refundCount.toLocaleString()} refund requests.`
+                : 'No refund amount data is available in the selected window.'}
+            </p>
+            <table className="sr-only">
+              <caption>Refund amount by request date</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Request date</th>
+                  <th scope="col">Refund amount</th>
+                  <th scope="col">Refund requests</th>
+                </tr>
+              </thead>
+              <tbody>
+                {refundTrend.map((point) => (
+                  <tr key={point.isoDate}>
+                    <td>{point.label}</td>
+                    <td>{formatCurrency(point.refundAmount)}</td>
+                    <td>{point.refundCount}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </Card>
 
         <Card className="analytics-card analytics-card--chart">
           <div className="analytics-card__header">
             <div>
-              <h3>Payment method breakdown</h3>
+              <h3 id="payment-breakdown-heading">Payment method breakdown</h3>
               <p>
                 Compare how much requested value each method contributes to the
                 refund workload.
@@ -403,8 +485,10 @@ export function AnalyticsPage() {
             </div>
           </div>
           <div
+            aria-describedby="payment-breakdown-summary"
+            aria-labelledby="payment-breakdown-heading"
             className="chart-shell"
-            aria-label="Payment method breakdown chart"
+            role="img"
           >
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
@@ -448,12 +532,38 @@ export function AnalyticsPage() {
               </BarChart>
             </ResponsiveContainer>
           </div>
+          <div id="payment-breakdown-summary">
+            <p className="analytics-card__support">
+              {highestAmountMethod
+                ? `Largest refund amount exposure: ${paymentMethodLabels[highestAmountMethod.paymentMethod]} with ${formatCurrency(highestAmountMethod.refundAmountTotal)} requested across ${highestAmountMethod.refundRequestCount.toLocaleString()} refund requests.`
+                : 'No payment-method breakdown is available in the selected window.'}
+            </p>
+            <table className="sr-only">
+              <caption>Refund amount by payment method</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Payment method</th>
+                  <th scope="col">Refund amount</th>
+                  <th scope="col">Refund requests</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paymentMethodAnalytics.map((entry) => (
+                  <tr key={entry.paymentMethod}>
+                    <td>{paymentMethodLabels[entry.paymentMethod]}</td>
+                    <td>{formatCurrency(entry.refundAmountTotal)}</td>
+                    <td>{entry.refundRequestCount}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </Card>
 
         <Card className="analytics-card analytics-card--chart">
           <div className="analytics-card__header">
             <div>
-              <h3>Refund ratio by payment method</h3>
+              <h3 id="refund-ratio-heading">Refund ratio by payment method</h3>
               <p>
                 Use this comparison to spot methods that over-index on refunds
                 relative to transaction volume.
@@ -461,8 +571,10 @@ export function AnalyticsPage() {
             </div>
           </div>
           <div
+            aria-describedby="refund-ratio-summary"
+            aria-labelledby="refund-ratio-heading"
             className="chart-shell"
-            aria-label="Refund ratio by payment method chart"
+            role="img"
           >
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={paymentMethodAnalytics}>
@@ -498,6 +610,34 @@ export function AnalyticsPage() {
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
+          </div>
+          <div id="refund-ratio-summary">
+            <p className="analytics-card__support">
+              {highestRatioMethod
+                ? `Highest refund ratio: ${paymentMethodLabels[highestRatioMethod.paymentMethod]} at ${formatPercent(highestRatioMethod.refundToTransactionRatio)}.`
+                : 'No refund ratio comparison is available in the selected window.'}
+            </p>
+            <table className="sr-only">
+              <caption>Refund ratio by payment method</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Payment method</th>
+                  <th scope="col">Refund ratio</th>
+                  <th scope="col">Refund requests</th>
+                  <th scope="col">Related transactions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paymentMethodAnalytics.map((entry) => (
+                  <tr key={entry.paymentMethod}>
+                    <td>{paymentMethodLabels[entry.paymentMethod]}</td>
+                    <td>{formatPercent(entry.refundToTransactionRatio)}</td>
+                    <td>{entry.refundRequestCount}</td>
+                    <td>{entry.transactionCount}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </Card>
 

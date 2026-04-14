@@ -8,6 +8,10 @@ const navigation = [
 export function AppShell() {
   return (
     <div className="app-shell">
+      <a className="skip-link" href="#main-content">
+        Skip to main content
+      </a>
+
       <header className="app-header">
         <div className="app-header__content">
           <div className="app-header__identity">
@@ -52,10 +56,10 @@ export function AppShell() {
             aria-labelledby="milestone-heading"
           >
             <p className="app-sidebar__label">Current Milestone</p>
-            <h2 id="milestone-heading">Analytics Visibility</h2>
+            <h2 id="milestone-heading">Workflow Safety</h2>
             <p>
-              The dashboard now surfaces refund trends, payment-method pressure,
-              and high-risk customer concentration for investigative demos.
+              Batch review, exclusions for flagged items, and what-if simulation
+              are now wired into the explorer workflow for safer refund demos.
             </p>
           </section>
         </aside>

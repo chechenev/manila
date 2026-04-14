@@ -353,21 +353,21 @@ Add batch tooling and simulation features that strengthen decision confidence wi
 
 ### Tasks
 
-- [ ] Implement multi-select behavior in the explorer
-- [ ] Add batch action entry point
-- [ ] Build a preflight review surface for selected items
-- [ ] Summarize the batch:
+- [x] Implement multi-select behavior in the explorer
+- [x] Add batch action entry point
+- [x] Build a preflight review surface for selected items
+- [x] Summarize the batch:
   - item count
   - total amount
   - critical flags present
   - warnings present
-- [ ] Allow excluding flagged items from the batch
-- [ ] Prevent or strongly warn on unsafe batch processing
-- [ ] Implement single-refund what-if simulation
-- [ ] Simulate whether approval would create or worsen duplicate exposure
-- [ ] Simulate financial impact for the current filtered view
-- [ ] Present simulation results in a simple, understandable format
-- [ ] Add tests for batch-safety logic and simulation helpers
+- [x] Allow excluding flagged items from the batch
+- [x] Prevent or strongly warn on unsafe batch processing
+- [x] Implement single-refund what-if simulation
+- [x] Simulate whether approval would create or worsen duplicate exposure
+- [x] Simulate financial impact for the current filtered view
+- [x] Present simulation results in a simple, understandable format
+- [x] Add tests for batch-safety logic and simulation helpers
 
 ### Deliverables
 
@@ -376,14 +376,14 @@ Add batch tooling and simulation features that strengthen decision confidence wi
 
 ### Verification Checklist
 
-- [ ] Batch selection is easy to understand
-- [ ] Risky items are surfaced before confirming bulk actions
-- [ ] Excluding flagged items works as intended
-- [ ] Simulation helps explain impact rather than adding confusion
+- [x] Batch selection is easy to understand
+- [x] Risky items are surfaced before confirming bulk actions
+- [x] Excluding flagged items works as intended
+- [x] Simulation helps explain impact rather than adding confusion
 
 ### Exit Criteria
 
-- Stretch features feel integrated and demo-worthy, not bolted on
+- [x] Stretch features feel integrated and demo-worthy, not bolted on
 
 ---
 

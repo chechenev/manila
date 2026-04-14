@@ -57,7 +57,7 @@ describe('AppRouter', () => {
     )
     await user.click(screen.getByRole('button', { name: 'Apply Filters' }))
     await user.click(
-      screen.getByRole('button', { name: /RF-00016 Joaquin Aquino/i }),
+      screen.getAllByRole('button', { name: 'Review details' })[0],
     )
 
     expect(
@@ -77,5 +77,39 @@ describe('AppRouter', () => {
     expect(
       screen.getByRole('button', { current: 'page', name: '2' }),
     ).toBeInTheDocument()
+  })
+
+  it('opens batch review and allows excluding flagged items', async () => {
+    const user = userEvent.setup()
+
+    render(
+      <MemoryRouter initialEntries={['/explorer']}>
+        <AppRouter />
+      </MemoryRouter>,
+    )
+
+    await user.click(
+      screen.getByRole('button', {
+        name: /Add RF-00016 to batch selection/i,
+      }),
+    )
+    await user.click(
+      screen.getByRole('button', {
+        name: /Add RF-00015 to batch selection/i,
+      }),
+    )
+    await user.click(screen.getByRole('button', { name: /Open Bulk Review/i }))
+
+    expect(
+      screen.getByRole('heading', {
+        name: /Preflight the selected refund batch/i,
+      }),
+    ).toBeInTheDocument()
+
+    await user.click(
+      screen.getByRole('button', { name: /Exclude flagged items/i }),
+    )
+
+    expect(screen.getByText(/Excluded items/i)).toBeInTheDocument()
   })
 })
