@@ -52,10 +52,10 @@ export function AppShell() {
             aria-labelledby="milestone-heading"
           >
             <p className="app-sidebar__label">Current Milestone</p>
-            <h2 id="milestone-heading">Explorer Workflow</h2>
+            <h2 id="milestone-heading">Analytics Visibility</h2>
             <p>
-              The seeded queue, detail workflow, and local decision actions are
-              now ready for end-to-end refund investigation demos.
+              The dashboard now surfaces refund trends, payment-method pressure,
+              and high-risk customer concentration for investigative demos.
             </p>
           </section>
         </aside>

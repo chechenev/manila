@@ -310,22 +310,22 @@ Build a secondary analytics workspace that helps identify refund trends and busi
 
 ### Tasks
 
-- [ ] Define the dashboard layout and narrative order
-- [ ] Implement top-line KPI cards for:
+- [x] Define the dashboard layout and narrative order
+- [x] Implement top-line KPI cards for:
   - total refund count
   - total refund amount
   - refund-to-transaction ratio
   - average purchase-to-refund-request delay
-- [ ] Implement refund volume over time chart
-- [ ] Implement refund amount over time chart
-- [ ] Implement payment method breakdown visualization
-- [ ] Implement refund-to-transaction ratio comparison by payment method
-- [ ] Implement a view for high-refund or high-risk customers
-- [ ] Add clear labels and explanatory copy for each visualization
-- [ ] Ensure charts degrade gracefully on smaller screens
-- [ ] Ensure analytics remain readable on mobile-sized screens
-- [ ] Ensure dashboard metrics are sourced from shared domain selectors
-- [ ] Add tests for analytics selectors and any critical chart mapping logic
+- [x] Implement refund volume over time chart
+- [x] Implement refund amount over time chart
+- [x] Implement payment method breakdown visualization
+- [x] Implement refund-to-transaction ratio comparison by payment method
+- [x] Implement a view for high-refund or high-risk customers
+- [x] Add clear labels and explanatory copy for each visualization
+- [x] Ensure charts degrade gracefully on smaller screens
+- [x] Ensure analytics remain readable on mobile-sized screens
+- [x] Ensure dashboard metrics are sourced from shared domain selectors
+- [x] Add tests for analytics selectors and any critical chart mapping logic
 
 ### Deliverables
 
@@ -334,14 +334,14 @@ Build a secondary analytics workspace that helps identify refund trends and busi
 
 ### Verification Checklist
 
-- [ ] Dashboard answers the "what patterns are hurting us?" question
-- [ ] Metrics match the seeded data
-- [ ] Charts are readable and not decorative filler
-- [ ] Operators can identify suspicious customers and payment-method trends
+- [x] Dashboard answers the "what patterns are hurting us?" question
+- [x] Metrics match the seeded data
+- [x] Charts are readable and not decorative filler
+- [x] Operators can identify suspicious customers and payment-method trends
 
 ### Exit Criteria
 
-- The analytics view adds real investigative value beyond the explorer
+- [x] The analytics view adds real investigative value beyond the explorer
 
 ---
 

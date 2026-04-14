@@ -337,11 +337,119 @@ select:focus-visible {
   gap: var(--space-6);
 }
 
+.analytics-hero__content {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.analytics-filter-card {
+  gap: var(--space-4);
+}
+
+.analytics-filter-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.analytics-filter-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  align-items: end;
+}
+
+.analytics-filter-card__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100%;
+}
+
 .analytics-hero__badges {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: var(--space-2);
+}
+
+.analytics-grid--dashboard .analytics-card {
+  grid-column: span 6;
+}
+
+.analytics-card--wide {
+  grid-column: span 12;
+  width: 100%;
+  min-width: 0;
+}
+
+.analytics-card__header {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.analytics-card__header h3,
+.analytics-card--table h3 {
+  margin: 0;
+  color: var(--color-ink-strong);
+}
+
+.analytics-card__support {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.chart-shell {
+  height: 19rem;
+  min-height: 19rem;
+}
+
+.customer-insights {
+  display: grid;
+  gap: 1px;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  border: 1px solid rgba(30, 58, 79, 0.1);
+  border-radius: var(--radius-md);
+  background: rgba(30, 58, 79, 0.08);
+}
+
+.customer-insights__head,
+.customer-insights__row {
+  display: grid;
+  min-width: 60rem;
+  grid-template-columns: 1.35fr 0.9fr 0.7fr 0.7fr 0.8fr 1fr 0.9fr;
+  gap: var(--space-3);
+  align-items: center;
+  padding: var(--space-3) var(--space-4);
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.customer-insights__head {
+  background: rgba(232, 240, 244, 0.92);
+  color: var(--color-ink-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.customer-insights__row {
+  color: var(--color-ink);
+}
+
+.customer-insights__identity {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.customer-insights__identity strong {
+  color: var(--color-ink-strong);
+}
+
+.customer-insights__identity span {
+  color: var(--color-ink-muted);
+  font-size: 0.9rem;
 }
 
 .filter-grid {
@@ -875,6 +983,11 @@ select:focus-visible {
     display: grid;
   }
 
+  .analytics-filter-card__header,
+  .analytics-filter-grid {
+    display: grid;
+  }
+
   .metric-card,
   .analytics-card {
     grid-column: span 6;
@@ -908,6 +1021,11 @@ select:focus-visible {
   .metric-card,
   .analytics-card {
     grid-column: span 1;
+  }
+
+  .chart-shell {
+    height: 16rem;
+    min-height: 16rem;
   }
 
   .request-list__item {
@@ -944,5 +1062,24 @@ select:focus-visible {
   .queue-row__grid,
   .detail-grid {
     grid-template-columns: 1fr;
+  }
+
+  .customer-insights {
+    gap: var(--space-3);
+    background: transparent;
+    border: 0;
+    overflow: visible;
+  }
+
+  .customer-insights__head {
+    display: none;
+  }
+
+  .customer-insights__row {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(30, 58, 79, 0.1);
   }
 }

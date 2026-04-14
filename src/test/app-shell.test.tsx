@@ -30,8 +30,15 @@ describe('AppRouter', () => {
       screen.getByRole('heading', { name: 'Analytics Dashboard' }),
     ).toBeInTheDocument()
     expect(
-      screen.getByText(/Analytics route is wired and ready/i),
+      screen.getByText(/Refund pressure is concentrated/i),
     ).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', {
+        name: /High-refund and high-risk customers/i,
+      }),
+    ).toBeInTheDocument()
+    expect(screen.getByLabelText(/Request date from/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/Request date to/i)).toBeInTheDocument()
   })
 
   it('filters the queue and updates the selected detail panel', async () => {
@@ -49,6 +56,9 @@ describe('AppRouter', () => {
       'CUS-00004',
     )
     await user.click(screen.getByRole('button', { name: 'Apply Filters' }))
+    await user.click(
+      screen.getByRole('button', { name: /RF-00016 Joaquin Aquino/i }),
+    )
 
     expect(
       screen.getByRole('heading', { name: /Joaquin Aquino/i }),
@@ -64,6 +74,8 @@ describe('AppRouter', () => {
     )
 
     expect(screen.getByLabelText(/Payment method/i)).toHaveValue('gcash')
-    expect(screen.getByText(/page 2 of/i)).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { current: 'page', name: '2' }),
+    ).toBeInTheDocument()
   })
 })

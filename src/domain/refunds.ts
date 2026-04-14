@@ -172,6 +172,38 @@ export type PaymentMethodSummary = {
   refundToTransactionRatio: number
 }
 
+export type AnalyticsOverview = {
+  totalRefundCount: number
+  totalRefundAmount: number
+  refundToTransactionRatio: number
+  averagePurchaseToRefundDelayDays: number
+}
+
+export type RefundTrendPoint = {
+  isoDate: string
+  label: string
+  refundCount: number
+  refundAmount: number
+}
+
+export type PaymentMethodAnalytics = PaymentMethodSummary & {
+  refundAmountTotal: number
+  criticalRiskCount: number
+  reviewCount: number
+}
+
+export type CustomerRefundInsight = {
+  customerId: string
+  customerName: string
+  customerExternalId: string
+  segment: CustomerSegment
+  refundRequestCount: number
+  totalRequestedAmount: number
+  criticalRiskCount: number
+  reviewCount: number
+  latestRequestDate: string
+}
+
 export type EnrichedRefundRequest = RefundRequest & {
   customer: Customer
   transaction: Transaction
