@@ -1,0 +1,56 @@
+:root {
+  color-scheme: light;
+  font-family:
+    'IBM Plex Sans',
+    'Inter',
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --color-ink-strong: #112130;
+  --color-ink: #294053;
+  --color-ink-muted: #60768a;
+  --color-surface: #f5f3ee;
+  --color-surface-raised: rgba(255, 255, 255, 0.88);
+  --color-surface-strong: #fffdfa;
+  --color-border: rgba(30, 58, 79, 0.12);
+  --color-border-strong: rgba(30, 58, 79, 0.2);
+  --color-brand: #0f766e;
+  --color-brand-strong: #115e59;
+  --color-brand-soft: rgba(15, 118, 110, 0.1);
+  --color-warning: #a16207;
+  --color-warning-soft: rgba(217, 119, 6, 0.14);
+  --color-critical: #b42318;
+  --color-critical-soft: rgba(180, 35, 24, 0.12);
+  --color-success: #166534;
+  --color-success-soft: rgba(22, 101, 52, 0.12);
+  --color-shadow: rgba(17, 33, 48, 0.08);
+
+  --radius-sm: 0.75rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.5rem;
+  --radius-pill: 999px;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+
+  --shadow-sm: 0 4px 18px var(--color-shadow);
+  --shadow-md: 0 18px 36px rgba(17, 33, 48, 0.12);
+
+  --container-width: 82rem;
+}
