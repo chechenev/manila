@@ -9,10 +9,26 @@ import {
 import { SectionHeading } from '../../components/ui/SectionHeading.tsx'
 
 const queueMetrics = [
-  { label: 'Pending queue', value: '486', tone: 'default' as const },
-  { label: 'Critical risk', value: '38', tone: 'critical' as const },
-  { label: 'Needs review', value: '91', tone: 'warning' as const },
-  { label: 'Exposure', value: '$42,380', tone: 'success' as const },
+  {
+    label: 'Pending queue',
+    value: '486',
+    tooltip: 'Current refund requests waiting for an operator decision.',
+  },
+  {
+    label: 'Critical risk',
+    value: '38',
+    tooltip: 'Requests blocked by duplicate, chargeback, or invalid refund signals.',
+  },
+  {
+    label: 'Needs review',
+    value: '91',
+    tooltip: 'Requests that are not blocked but require manual investigation first.',
+  },
+  {
+    label: 'Exposure',
+    value: '$42,380',
+    tooltip: 'Total value of the current pending queue if approved as requested.',
+  },
 ]
 
 const sampleRequests = [
@@ -57,10 +73,19 @@ export function RefundExplorerPage() {
       <div className="metrics-grid" role="list" aria-label="Queue highlights">
         {queueMetrics.map((metric) => (
           <Card key={metric.label} className="metric-card" role="listitem">
-            <p className="metric-card__label">{metric.label}</p>
+            <div className="metric-card__header">
+              <p className="metric-card__label">{metric.label}</p>
+              <button
+                aria-label={`${metric.label} info`}
+                className="metric-card__tooltip"
+                data-tooltip={metric.tooltip}
+                type="button"
+              >
+                i
+              </button>
+            </div>
             <div className="metric-card__value-row">
               <strong className="metric-card__value">{metric.value}</strong>
-              <Badge tone={metric.tone}>{metric.label}</Badge>
             </div>
           </Card>
         ))}

@@ -213,6 +213,12 @@ select:focus-visible {
   gap: var(--space-2);
 }
 
+.section-heading > div {
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+}
+
 .section-heading__title {
   font-size: clamp(1.5rem, 4vw, 2.25rem);
   line-height: 1.05;
@@ -236,16 +242,71 @@ select:focus-visible {
   color: var(--color-ink-muted);
 }
 
-.metric-card__value-row {
+.metric-card__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
-  min-width: 0;
+}
+
+.metric-card__tooltip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--color-ink-muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: help;
+}
+
+.metric-card__tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  z-index: 5;
+  width: max-content;
+  max-width: 16rem;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: rgba(17, 33, 48, 0.94);
+  box-shadow: var(--shadow-md);
+  color: #f8fafc;
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: left;
+  white-space: normal;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition:
+    opacity 140ms ease,
+    transform 140ms ease;
+}
+
+.metric-card__tooltip:hover::after,
+.metric-card__tooltip:focus-visible::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.metric-card__value-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .metric-card__value {
-  flex: 0 0 auto;
   font-size: 1.75rem;
   color: var(--color-ink-strong);
 }
@@ -308,15 +369,20 @@ select:focus-visible {
 
 .button-row {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
   gap: var(--space-3);
 }
 
 .ui-button {
-  min-height: 2.875rem;
-  padding: 0 var(--space-4);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  padding: 0.55rem var(--space-4);
   border: 1px solid transparent;
   font-weight: 700;
+  line-height: 1.2;
   cursor: pointer;
   transition:
     transform 160ms ease,
@@ -365,14 +431,6 @@ select:focus-visible {
   overflow-wrap: anywhere;
   line-height: 1.2;
   padding-block: var(--space-2);
-}
-
-.metric-card__value-row .ui-badge {
-  width: auto;
-  flex: 0 1 11rem;
-  min-width: 0;
-  max-width: min(100%, 11rem);
-  margin-left: auto;
 }
 
 .ui-badge--success {
