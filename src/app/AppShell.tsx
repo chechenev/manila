@@ -44,18 +44,6 @@ export function AppShell() {
               </NavLink>
             ))}
           </nav>
-
-          <section
-            className="app-sidebar__panel"
-            aria-labelledby="milestone-heading"
-          >
-            <p className="app-sidebar__label">Current Milestone</p>
-            <h2 id="milestone-heading">Demo Ready</h2>
-            <p>
-              The explorer, analytics, batch safety flow, and lazy-loaded routes
-              are now hardened for demo walkthroughs and local handoff.
-            </p>
-          </section>
         </aside>
 
         <main className="app-main" id="main-content">
