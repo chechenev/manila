@@ -395,34 +395,34 @@ Polish the application, close quality gaps, and prepare the repo for handoff/dem
 
 ### Tasks
 
-- [ ] Review visual consistency across screens
-- [ ] Improve spacing, hierarchy, and microcopy where needed
-- [ ] Audit empty, edge, and extreme-value states
-- [ ] Audit accessibility basics:
+- [x] Review visual consistency across screens
+- [x] Improve spacing, hierarchy, and microcopy where needed
+- [x] Audit empty, edge, and extreme-value states
+- [x] Audit accessibility basics:
   - focus states
   - semantics
   - contrast
   - labels
-- [ ] Audit responsiveness on desktop and tablet widths
-- [ ] Audit responsiveness on mobile-sized widths
-- [ ] Review loading and fallback behavior if any asynchronous patterns exist
-- [ ] Clean up dead code and leftover placeholders
-- [ ] Tighten comments so they explain only non-obvious logic
-- [ ] Complete the README with:
+- [x] Audit responsiveness on desktop and tablet widths
+- [x] Audit responsiveness on mobile-sized widths
+- [x] Review loading and fallback behavior if any asynchronous patterns exist
+- [x] Clean up dead code and leftover placeholders
+- [x] Tighten comments so they explain only non-obvious logic
+- [x] Complete the README with:
   - how to run
   - completed requirements
   - design decisions
   - tradeoffs
   - what to add next
-- [ ] Add a brief walkthrough section with the strongest demo path
-- [ ] Verify seeded scenarios are easy to demo intentionally
-- [ ] Run final quality checks:
+- [x] Add a brief walkthrough section with the strongest demo path
+- [x] Verify seeded scenarios are easy to demo intentionally
+- [x] Run final quality checks:
   - install
   - build
   - tests
   - e2e
   - lint
-- [ ] Prepare a short final changelog / delivery summary
+- [x] Prepare a short final changelog / delivery summary
 
 ### Deliverables
 
@@ -432,10 +432,10 @@ Polish the application, close quality gaps, and prepare the repo for handoff/dem
 
 ### Verification Checklist
 
-- [ ] App is visually coherent
-- [ ] Key workflows are stable
-- [ ] Docs are clear and complete
-- [ ] Final quality checks pass
+- [x] App is visually coherent
+- [x] Key workflows are stable
+- [x] Docs are clear and complete
+- [x] Final quality checks pass
 
 ### Exit Criteria
 
@@ -449,25 +449,25 @@ These should be monitored throughout the project, not only at the end.
 
 ### Engineering Quality
 
-- [ ] No `any` in core domain logic
-- [ ] Domain rules are not duplicated in components
-- [ ] Seeded data remains deterministic
-- [ ] Shared types stay consistent across features
-- [ ] Tests cover business-critical logic
+- [x] No `any` in core domain logic
+- [x] Domain rules are not duplicated in components
+- [x] Seeded data remains deterministic
+- [x] Shared types stay consistent across features
+- [x] Tests cover business-critical logic
 
 ### Product Quality
 
-- [ ] Risk explanations remain human-readable
-- [ ] Explorer stays faster and more polished than secondary views
-- [ ] Analytics remain actionable
-- [ ] Stretch features do not compromise clarity
+- [x] Risk explanations remain human-readable
+- [x] Explorer stays faster and more polished than secondary views
+- [x] Analytics remain actionable
+- [x] Stretch features do not compromise clarity
 
 ### Documentation Quality
 
-- [ ] Docs are kept current as implementation evolves
-- [ ] Setup instructions are accurate
-- [ ] Tradeoffs are documented honestly
-- [ ] Deployment instructions for Vercel remain accurate
+- [x] Docs are kept current as implementation evolves
+- [x] Setup instructions are accurate
+- [x] Tradeoffs are documented honestly
+- [x] Deployment instructions for Vercel remain accurate
 
 ---
 
@@ -532,15 +532,27 @@ Use this section later to note milestone outcomes, blockers, and scope adjustmen
 
 ### Milestone 4
 
-- Status: `[ ]`
+- Status: `[x]`
 - Notes:
+  - Analytics route now provides KPI cards, time-series charts, method comparisons, and customer concentration analysis
+  - Dashboard filters by request date range and recomputes metrics from shared selectors
+  - Full-width customer table remains readable on smaller viewports
+  - Analytics selector coverage and route rendering tests pass
 
 ### Milestone 5
 
-- Status: `[ ]`
+- Status: `[x]`
 - Notes:
+  - Multi-select batch workflow implemented in the explorer
+  - Batch preflight modal summarizes totals, critical flags, and exclusions
+  - Filtered-view financial impact summary and per-refund what-if simulation added
+  - Simulation and batch-safety tests pass
 
 ### Milestone 6
 
-- Status: `[ ]`
+- Status: `[x]`
 - Notes:
+  - Route-level lazy loading added for explorer and analytics views
+  - Unit and Playwright coverage updated to match the modal + batch workflow
+  - README rewritten as a demo-ready handoff document with walkthrough and tradeoffs
+  - Final checks completed: `typecheck`, `lint`, `test`, `build`, `test:e2e`

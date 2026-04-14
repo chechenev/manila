@@ -24,12 +24,6 @@ export function AppShell() {
               </p>
             </div>
           </div>
-
-          <div className="app-header__status" aria-label="Environment summary">
-            <span className="status-pill status-pill--live">Local Demo</span>
-            <span className="status-pill">Vite + React + TypeScript</span>
-            <span className="status-pill">Mobile & A11y Baseline</span>
-          </div>
         </div>
       </header>
 
@@ -56,10 +50,10 @@ export function AppShell() {
             aria-labelledby="milestone-heading"
           >
             <p className="app-sidebar__label">Current Milestone</p>
-            <h2 id="milestone-heading">Workflow Safety</h2>
+            <h2 id="milestone-heading">Demo Ready</h2>
             <p>
-              Batch review, exclusions for flagged items, and what-if simulation
-              are now wired into the explorer workflow for safer refund demos.
+              The explorer, analytics, batch safety flow, and lazy-loaded routes
+              are now hardened for demo walkthroughs and local handoff.
             </p>
           </section>
         </aside>

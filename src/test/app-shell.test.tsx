@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { AppRouter } from '../app/AppRouter.tsx'
 
 describe('AppRouter', () => {
-  it('renders the explorer route content', () => {
+  it('renders the explorer route content', async () => {
     render(
       <MemoryRouter initialEntries={['/explorer']}>
         <AppRouter />
@@ -12,14 +12,14 @@ describe('AppRouter', () => {
     )
 
     expect(
-      screen.getByRole('heading', { name: 'Refund Explorer' }),
+      await screen.findByRole('heading', { name: 'Refund Explorer' }),
     ).toBeInTheDocument()
     expect(
       screen.getByRole('heading', { name: 'Pending refund requests' }),
     ).toBeInTheDocument()
   })
 
-  it('renders the analytics route content', () => {
+  it('renders the analytics route content', async () => {
     render(
       <MemoryRouter initialEntries={['/analytics']}>
         <AppRouter />
@@ -27,7 +27,7 @@ describe('AppRouter', () => {
     )
 
     expect(
-      screen.getByRole('heading', { name: 'Analytics Dashboard' }),
+      await screen.findByRole('heading', { name: 'Analytics Dashboard' }),
     ).toBeInTheDocument()
     expect(
       screen.getByText(/Refund pressure is concentrated/i),
@@ -37,11 +37,13 @@ describe('AppRouter', () => {
         name: /High-refund and high-risk customers/i,
       }),
     ).toBeInTheDocument()
-    expect(screen.getByLabelText(/Request date from/i)).toBeInTheDocument()
+    expect(
+      await screen.findByLabelText(/Request date from/i),
+    ).toBeInTheDocument()
     expect(screen.getByLabelText(/Request date to/i)).toBeInTheDocument()
   })
 
-  it('filters the queue and updates the selected detail panel', async () => {
+  it('filters the queue and opens the selected refund modal', async () => {
     const user = userEvent.setup()
 
     render(
@@ -50,14 +52,15 @@ describe('AppRouter', () => {
       </MemoryRouter>,
     )
 
-    await user.clear(screen.getByLabelText(/Customer, order, or refund ID/i))
-    await user.type(
-      screen.getByLabelText(/Customer, order, or refund ID/i),
-      'CUS-00004',
+    const queryField = await screen.findByLabelText(
+      /Customer, order, or refund ID/i,
     )
+
+    await user.clear(queryField)
+    await user.type(queryField, 'CUS-00004')
     await user.click(screen.getByRole('button', { name: 'Apply Filters' }))
     await user.click(
-      screen.getAllByRole('button', { name: 'Review details' })[0],
+      screen.getAllByRole('button', { name: /Review details for/i })[0],
     )
 
     expect(
@@ -66,14 +69,14 @@ describe('AppRouter', () => {
     expect(screen.getByText(/Risk flags and explanations/i)).toBeInTheDocument()
   })
 
-  it('hydrates filters and page state from the URL', () => {
+  it('hydrates filters and page state from the URL', async () => {
     render(
       <MemoryRouter initialEntries={['/explorer?paymentMethod=gcash&page=2']}>
         <AppRouter />
       </MemoryRouter>,
     )
 
-    expect(screen.getByLabelText(/Payment method/i)).toHaveValue('gcash')
+    expect(await screen.findByLabelText(/Payment method/i)).toHaveValue('gcash')
     expect(
       screen.getByRole('button', { current: 'page', name: '2' }),
     ).toBeInTheDocument()
@@ -89,7 +92,7 @@ describe('AppRouter', () => {
     )
 
     await user.click(
-      screen.getByRole('button', {
+      await screen.findByRole('button', {
         name: /Add RF-00016 to batch selection/i,
       }),
     )
@@ -111,5 +114,73 @@ describe('AppRouter', () => {
     )
 
     expect(screen.getByText(/Excluded items/i)).toBeInTheDocument()
+  })
+
+  it('allows flagging a blocked batch from the preflight review', async () => {
+    const user = userEvent.setup()
+
+    render(
+      <MemoryRouter initialEntries={['/explorer']}>
+        <AppRouter />
+      </MemoryRouter>,
+    )
+
+    await user.click(
+      screen.getByRole('button', {
+        name: /Add RF-00016 to batch selection/i,
+      }),
+    )
+    await user.click(screen.getByRole('button', { name: /Open Bulk Review/i }))
+    await user.click(
+      screen.getByRole('button', { name: /Flag included batch/i }),
+    )
+
+    expect(
+      screen.queryByRole('heading', {
+        name: /Preflight the selected refund batch/i,
+      }),
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', {
+        name: /Add RF-00016 to batch selection/i,
+      }),
+    ).not.toBeInTheDocument()
+  })
+
+  it('clears exclusion state when a refund is removed from batch selection', async () => {
+    const user = userEvent.setup()
+
+    render(
+      <MemoryRouter initialEntries={['/explorer']}>
+        <AppRouter />
+      </MemoryRouter>,
+    )
+
+    await user.click(
+      screen.getByRole('button', {
+        name: /Add RF-00016 to batch selection/i,
+      }),
+    )
+    await user.click(screen.getByRole('button', { name: /Open Bulk Review/i }))
+    await user.click(screen.getByRole('button', { name: /^Exclude$/i }))
+    expect(screen.getByText(/Excluded items/i)).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: /Close review/i }))
+    await user.click(
+      screen.getByRole('button', {
+        name: /Remove RF-00016 from batch selection/i,
+      }),
+    )
+    await user.click(
+      screen.getByRole('button', {
+        name: /Add RF-00016 to batch selection/i,
+      }),
+    )
+    await user.click(screen.getByRole('button', { name: /Open Bulk Review/i }))
+
+    expect(screen.queryByText(/Excluded items/i)).not.toBeInTheDocument()
+    expect(
+      screen.queryByText(/No blocking items remain in the included set./i),
+    ).not.toBeInTheDocument()
   })
 })

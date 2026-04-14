@@ -674,7 +674,11 @@ export function RefundExplorerPage() {
   }
 
   function handleBatchDecision(decision: ActionStatus) {
-    if (includedBatchRefunds.length === 0 || batchSummary.state === 'blocked') {
+    if (includedBatchRefunds.length === 0) {
+      return
+    }
+
+    if (decision === 'approved' && batchSummary.state === 'blocked') {
       return
     }
 
@@ -717,11 +721,19 @@ export function RefundExplorerPage() {
   }
 
   function toggleRefundSelection(refundId: string) {
-    setSelectedRefundIds((current) =>
-      current.includes(refundId)
-        ? current.filter((id) => id !== refundId)
-        : [...current, refundId],
-    )
+    setSelectedRefundIds((current) => {
+      const isSelected = current.includes(refundId)
+
+      if (isSelected) {
+        setExcludedBatchIds((excludedCurrent) =>
+          excludedCurrent.filter((id) => id !== refundId),
+        )
+
+        return current.filter((id) => id !== refundId)
+      }
+
+      return [...current, refundId]
+    })
   }
 
   function toggleExcludedBatchItem(refundId: string) {
